@@ -8,7 +8,8 @@ import urllib
 dl_dir = '/tmp'
 
 def print_debug(msg):
-	print msg
+	if False:
+		print msg
 
 def print_item(d):
 	print "score:", d["score"], "\tseeds:",d["seeds"], "\ttitle:", d["title"]
@@ -23,6 +24,7 @@ def download(d):
 	url = "http://torcache.net/torrent/" + d["torrent_hash"] +".torrent"
 	print_debug("url: " + url)
 	urllib.urlretrieve (url, dl_dir + '/' + d["torrent_hash"] + ".torrent")
+	print "downloaded: " + dl_dir + '/' + d["torrent_hash"] + ".torrent"
 
 name = sys.argv[1]
 season = sys.argv[2]
@@ -86,7 +88,15 @@ if answer == "y":
 elif answer == "n":
 	sys.exit(0)
 elif answer == "s":
-	pass
+	print "Choose:"
+	for i in range(1, len(data)):
+		print '[' + str(i) + ']',
+		print_item(data[i])
+	choice = int(raw_input())
+	if choice < 1 or choice > len(data):
+		print "invalid choice:", i
+		sys.exit(1)
+	download(data[i])
 else:
 	print "Invalid choice:", answer
 
